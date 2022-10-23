@@ -44,4 +44,4 @@ venv/
 notes.md
 set_env.sh
 
-/deployment/environment-variables/*
+/deployment/environment-variables/*.yaml
