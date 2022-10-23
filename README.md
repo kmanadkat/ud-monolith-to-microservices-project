@@ -179,4 +179,54 @@ Under `/deployment` folder create folders for each micro service & create `deplo
 1. Name: udagram-cluster-v3
 2. Cluster service role - [create EKS cluster role](https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html#create-service-role)
 3. Default VPC, Default Subnets, Default Security Group
+4. Cluster endpoint access - Public
+5. Networking Add-ons - defaults
+6. Configure logging - defaults (all off)
+7. Create
+
+#### Create Cluster Node Group
+
+1. Cluster > Compute > Add Node Group
+2. Name: udagram-node-group-prod
+3. Create Node IAM Role: IAM > Roles > Create role > AWS Service > EC2
+   Add permissions: **AmazonEKSWorkerNodePolicy**, **AmazonEC2ContainerRegistryReadOnly**, **AmazonEKS_CNI_Policy**
+   Next > Role Name: **AmazonEKSNodeRole** > Create Role
+4. Instance Type > m5.large > Disk Size: 20 GiB
+5. Min size: 2, max size: 3
+6. Node group update config: defaults
+7. Default Subnets, enable Configure SSH > select key pair (or create new)
+8. Select default security group
+9. Create
+
+### Configure `kubectl`
+
+1. Test aws user `aws sts get-caller-identity`
+
+2. update kubectl config
+   ```shell
+   aws eks update-kubeconfig --region ap-south-1 --name udagram-cluster-v4
+   ```
+
+3. Test `kubectl get svc`
+   ```shell
+   NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+   kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   20m
+   ```
+
+#### Deploy container to cluster
+
+Link all `environment-variable` yaml files and `deployment.yaml` , `service.yaml` files with following:
+
+```shell
+kubectl apply -f deployment/environment-variable/aws-secret.yaml
+kubectl apply -f deployment/environment-variable/env-configmap.yaml
+kubectl apply -f deployment/environment-variable/env-secret.yaml
+
+kubectl apply -f deployment/feed/deployment.yaml
+kubectl apply -f deployment/feed/service.yaml
+...
+...
+```
+
+### Project Screenshots
 
