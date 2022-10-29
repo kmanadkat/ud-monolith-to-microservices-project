@@ -297,7 +297,6 @@ kubectl autoscale deployment udagram-reverseproxy --cpu-percent=50 --min=1 --max
 
 ![](./screenshots/05a-kubectl-services.png)
 ![](./screenshots/05b-kubectl-services.png)
-![](./screenshots/05c-kubectl-services.png)
 
 #### Kubernetes Cluster Pods HPA
 
