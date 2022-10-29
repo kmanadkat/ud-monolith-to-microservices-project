@@ -228,5 +228,23 @@ kubectl apply -f deployment/feed/service.yaml
 ...
 ```
 
+#### Expose Frontend & Reverseproxy
+
+```shell
+# Check the deployment names and their pod status
+kubectl get deployments
+
+# Create a Service object that exposes the frontend deployment
+# The command below will ceates an external load balancer and assigns a fixed, external IP to the Service.
+kubectl expose deployment udagram-frontend --type=LoadBalancer --name=publicfrontend
+kubectl expose deployment udagram-reverseproxy --type=LoadBalancer --name=publicreverseproxy
+
+kubectl get services
+```
+
+Copy external IP of `publicreverseproxy` and put it `udagram-frontend/src/environments/environment.ts` & `environment.prod.ts`
+
+Increment container versions in `.travis.yml` and push commit to git triggering travis CI pipeline.
+
 ### Project Screenshots
 
