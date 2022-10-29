@@ -213,6 +213,18 @@ Under `/deployment` folder create folders for each micro service & create `deplo
    kubernetes   ClusterIP   10.100.0.1   <none>        443/TCP   20m
    ```
 
+#### Install Kubernetes Metrics Server
+
+```shell
+# Install
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# Test
+kubectl get deployment metrics-server -n kube-system
+```
+
+
+
 #### Deploy container to cluster
 
 Link all `environment-variable` yaml files and `deployment.yaml` , `service.yaml` files with following:
