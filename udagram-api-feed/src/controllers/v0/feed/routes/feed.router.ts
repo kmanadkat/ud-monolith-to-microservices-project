@@ -1,4 +1,5 @@
 import {Router, Request, Response} from 'express';
+import { v4 as uuidv4 } from 'uuid';
 import {FeedItem} from '../models/FeedItem';
 import {NextFunction} from 'connect';
 import * as jwt from 'jsonwebtoken';
@@ -28,12 +29,18 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
 
 // Get all feed items
 router.get('/', async (req: Request, res: Response) => {
+  const pid = uuidv4();
+
   const items = await FeedItem.findAndCountAll({order: [['id', 'DESC']]});
   items.rows.map((item) => {
     if (item.url) {
       item.url = AWS.getGetSignedUrl(item.url);
     }
   });
+
+  // Logs
+  console.log(new Date().toLocaleString() + `GET /feed/: ${pid}:${items.rows.length} - feeds returned`);
+
   res.send(items);
 });
 
@@ -58,6 +65,7 @@ router.get('/signed-url/:fileName',
 router.post('/',
     requireAuth,
     async (req: Request, res: Response) => {
+      const pid = uuidv4();
       const caption = req.body.caption;
       const fileName = req.body.url; // same as S3 key name
 
@@ -77,6 +85,10 @@ router.post('/',
       const savedItem = await item.save();
 
       savedItem.url = AWS.getGetSignedUrl(savedItem.url);
+
+      // Logs
+      console.log(new Date().toLocaleString() + `POST /feed/: ${pid} - New feed Added`);
+
       res.status(201).send(savedItem);
     });
 

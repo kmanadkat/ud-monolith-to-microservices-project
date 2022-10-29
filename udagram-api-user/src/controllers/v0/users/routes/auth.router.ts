@@ -1,4 +1,5 @@
 import {Router, Request, Response} from 'express';
+import { v4 as uuidv4 } from 'uuid';
 
 import {User} from '../models/User';
 import * as c from '../../../../config/config';
@@ -53,6 +54,7 @@ router.get('/verification',
     });
 
 router.post('/login', async (req: Request, res: Response) => {
+  const pid = uuidv4();
   const email = req.body.email;
   const password = req.body.password;
 
@@ -76,11 +78,16 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 
   const jwt = generateJWT(user);
+
+  // Logs
+  console.log(new Date().toLocaleString() + `POST /auth/login/: ${pid}:${user.id} - login success`);
+
   res.status(200).send({auth: true, token: jwt, user: user.short()});
 });
 
 
 router.post('/', async (req: Request, res: Response) => {
+  const pid = uuidv4();
   const email = req.body.email;
   const plainTextPassword = req.body.password;
 
@@ -108,6 +115,10 @@ router.post('/', async (req: Request, res: Response) => {
 
 
   const jwt = generateJWT(savedUser);
+
+  // Logs
+  console.log(new Date().toLocaleString() + `POST /auth/: ${pid}:${savedUser.id} - registeration success`);
+
   res.status(201).send({token: jwt, user: savedUser.short()});
 });
 
