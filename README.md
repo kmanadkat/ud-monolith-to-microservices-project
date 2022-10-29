@@ -191,7 +191,7 @@ Under `/deployment` folder create folders for each micro service & create `deplo
 3. Create Node IAM Role: IAM > Roles > Create role > AWS Service > EC2
    Add permissions: **AmazonEKSWorkerNodePolicy**, **AmazonEC2ContainerRegistryReadOnly**, **AmazonEKS_CNI_Policy**
    Next > Role Name: **AmazonEKSNodeRole** > Create Role
-4. Instance Type > m5.large > Disk Size: 20 GiB
+4. Instance Type > **m5.large** > Disk Size: 20 GiB
 5. Min size: 2, max size: 3
 6. Node group update config: defaults
 7. Default Subnets, enable Configure SSH > select key pair (or create new)
@@ -246,5 +246,52 @@ Copy external IP of `publicreverseproxy` and put it `udagram-frontend/src/enviro
 
 Increment container versions in `.travis.yml` and push commit to git triggering travis CI pipeline.
 
+#### Set up a Kubernetes HPA
+
+```
+kubectl autoscale deployment udagram-api-feed --cpu-percent=50 --min=1 --max=2
+kubectl autoscale deployment udagram-api-user --cpu-percent=50 --min=1 --max=2
+kubectl autoscale deployment udagram-frontend --cpu-percent=50 --min=1 --max=2
+kubectl autoscale deployment udagram-reverseproxy --cpu-percent=50 --min=1 --max=2
+```
+
 ### Project Screenshots
 
+#### Application Preview
+
+![](./screenshots/00-Application-Preview.png)
+
+#### Dockerhub Images
+
+![](./screenshots/01-Dockerhub.png)
+
+#### Github Travis CI Integration
+
+![](./screenshots/02-Github-Travis.png)
+
+#### Travis CI Pipeline - Building Images
+
+![](./screenshots/03-Travis-CI.png)
+
+#### Kubernetes Cluster
+
+![](./screenshots/00-kubernetes-cluster.png)
+
+#### Kubernetes Cluster Pods
+
+![](./screenshots/04-kubectl-get-pods.png)
+
+#### Kubernetes Cluster Services
+
+![](./screenshots/05a-kubectl-services.png)
+![](./screenshots/05b-kubectl-services.png)
+![](./screenshots/05c-kubectl-services.png)
+
+#### Kubernetes Cluster Pods HPA
+
+![](./screenshots/06a-kubectl-hpa.png)
+![](./screenshots/06b-kubectl-hpa.png)
+
+#### Kubernetes Cluster Pods Logs
+
+![](./screenshots/07-kubectl-logs.png)
