@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: udagram-frontend
-        image: kmanadkat/udagram-frontend:v7
+        image: kmanadkat/udagram-frontend:v8
         imagePullPolicy: Always
         ports:
         - containerPort: 80

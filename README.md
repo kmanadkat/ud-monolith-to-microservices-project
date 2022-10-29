@@ -230,9 +230,9 @@ kubectl get deployment metrics-server -n kube-system
 Link all `environment-variable` yaml files and `deployment.yaml` , `service.yaml` files with following:
 
 ```shell
-kubectl apply -f deployment/environment-variable/aws-secret.yaml
-kubectl apply -f deployment/environment-variable/env-configmap.yaml
-kubectl apply -f deployment/environment-variable/env-secret.yaml
+kubectl apply -f deployment/environment-variables/aws-secret.yaml
+kubectl apply -f deployment/environment-variables/env-configmap.yaml
+kubectl apply -f deployment/environment-variables/env-secret.yaml
 
 kubectl apply -f deployment/feed/deployment.yaml
 kubectl apply -f deployment/feed/service.yaml
